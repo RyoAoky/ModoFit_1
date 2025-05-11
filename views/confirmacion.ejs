@@ -1,0 +1,112 @@
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto">
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-8" data-aos="fade-up">
+                <div class="text-center mb-8">
+                    <div class="inline-block bg-green-100 p-4 rounded-full mb-4 float-animation">
+                        <i class="fas fa-check-circle text-green-500 text-5xl check-icon"></i>
+                    </div>
+                    <h1 class="text-3xl font-bold text-secondary mb-2 confirmation-title">¡Pago Confirmado!</h1>
+                    <p class="text-xl text-gray-600">Tu suscripción a ModoFit ha sido procesada correctamente.</p>
+                </div>
+
+                <div class="border-t border-b py-6 mb-6 confirmation-details">
+                    <h2 class="text-xl font-bold text-secondary mb-4">Detalles de la orden</h2>
+
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="text-gray-600">Número de orden:</div>
+                        <div class="font-semibold">MF-<%= new Date().getFullYear() %>-<span id="orden-numero">12345</span></div>
+
+                        <div class="text-gray-600">Fecha:</div>
+                        <div class="font-semibold"><span id="fecha-actual"><%= new Date().toLocaleDateString('es-ES') %></span></div>
+
+                        <div class="text-gray-600">Plan:</div>
+                        <div class="font-semibold" id="plan-nombre">Membresía ModoFit</div>
+
+                        <div class="text-gray-600">Duración:</div>
+                        <div class="font-semibold" id="plan-duracion">Mensual (renovación automática)</div>
+                    </div>
+
+                    <div class="border-t pt-4">
+                        <div class="flex justify-between mb-2">
+                            <span>Mensualidad:</span>
+                            <span id="precio-mensualidad">S/. 49.90</span>
+                        </div>
+                        <div class="flex justify-between mb-2">
+                            <span>Matrícula:</span>
+                            <span>S/. 0.00</span>
+                        </div>
+                        <% if(descuento) { %>
+                        <div class="flex justify-between mb-2 text-green-600" id="descuento-row">
+                            <span>Descuento:</span>
+                            <span id="descuento-monto">- S/. 20.00</span>
+                        </div>
+                        <% } %>
+                        <div class="flex justify-between font-bold text-lg pt-2 border-t">
+                            <span>Total:</span>
+                            <span class="text-primary" id="precio-total">S/. <%= descuento ? '29.90' : '49.90' %></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-primary bg-opacity-10 p-6 rounded-lg mb-8 animate__animated animate__fadeIn animate__delay-1s" data-aos="fade-up" data-aos-delay="200">
+                    <h2 class="text-xl font-bold text-secondary mb-4">¡Bienvenido a ModoFit!</h2>
+                    <p class="mb-4">Estamos emocionados de tenerte como parte de nuestra comunidad. Tu membresía está activa y puedes comenzar a disfrutar de nuestras instalaciones de inmediato.</p>
+                    <p class="mb-4">Con tu membresía ModoFit disfrutarás de:</p>
+                    <ul class="list-disc pl-6 mb-4">
+                        <li class="mb-2">Acceso completo a nuestras instalaciones</li>
+                        <li class="mb-2">2 pases gratis mensuales para invitar a tus amigos</li>
+                        <li class="mb-2">Acceso a nuestros exclusivos sillones de masajes</li>
+                    </ul>
+                    <p>Hemos enviado un correo electrónico con todos los detalles de tu membresía y tu tarjeta digital de acceso. También puedes descargar nuestra aplicación móvil para acceder a tu tarjeta digital y reservar clases.</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="flex flex-col sm:flex-row justify-center gap-4 mb-6">
+                        <a href="/" class="bg-primary hover:bg-yellow-400 text-secondary font-bold py-3 px-8 rounded-full text-lg transition duration-300 inline-block animate__animated animate__pulse animate__infinite">
+                            Volver al inicio
+                        </a>
+                        <button id="shareButton" class="bg-secondary hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 inline-block">
+                            Compartir <i class="fas fa-share-alt ml-2"></i>
+                        </button>
+                    </div>
+                    <div class="mt-4">
+                        <a href="/registro?nueva_compra=true" class="text-secondary hover:text-primary transition duration-300 inline-flex items-center">
+                            <i class="fas fa-plus-circle mr-2"></i> Realizar otra compra
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-8 next-steps" data-aos="fade-up" data-aos-delay="300">
+                <h2 class="text-xl font-bold text-secondary mb-4">Próximos pasos</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="text-center" data-aos="fade-up" data-aos-delay="400">
+                        <div class="bg-primary bg-opacity-10 p-4 rounded-full inline-block mb-4">
+                            <i class="fas fa-id-card text-primary text-3xl"></i>
+                        </div>
+                        <h3 class="font-bold text-secondary mb-2">Recoge tu tarjeta</h3>
+                        <p class="text-gray-600">Visita cualquiera de nuestras sedes con tu DNI para recoger tu tarjeta física.</p>
+                    </div>
+
+                    <div class="text-center" data-aos="fade-up" data-aos-delay="500">
+                        <div class="bg-primary bg-opacity-10 p-4 rounded-full inline-block mb-4">
+                            <i class="fas fa-mobile-alt text-primary text-3xl"></i>
+                        </div>
+                        <h3 class="font-bold text-secondary mb-2">Descarga la app</h3>
+                        <p class="text-gray-600">Accede a tu tarjeta digital y reserva clases desde nuestra aplicación móvil.</p>
+                    </div>
+
+                    <div class="text-center" data-aos="fade-up" data-aos-delay="600">
+                        <div class="bg-primary bg-opacity-10 p-4 rounded-full inline-block mb-4">
+                            <i class="fas fa-calendar-check text-primary text-3xl"></i>
+                        </div>
+                        <h3 class="font-bold text-secondary mb-2">Agenda tu inducción</h3>
+                        <p class="text-gray-600">Programa una sesión de inducción gratuita con uno de nuestros entrenadores.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

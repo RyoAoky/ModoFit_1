@@ -1,0 +1,99 @@
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-16">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div>
+                <a href="/#inicio" class="text-3xl font-bold text-primary flex items-center mb-6">
+                    <span class="text-3xl mr-2">💪</span> ModoFit
+                </a>
+                <p class="text-gray-400 mb-6">Tu gimnasio de confianza con las mejores instalaciones y profesionales para ayudarte a alcanzar tus objetivos fitness.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="bg-gray-800 hover:bg-primary text-white hover:text-secondary w-10 h-10 rounded-full flex items-center justify-center transition duration-300">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="bg-gray-800 hover:bg-primary text-white hover:text-secondary w-10 h-10 rounded-full flex items-center justify-center transition duration-300">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="bg-gray-800 hover:bg-primary text-white hover:text-secondary w-10 h-10 rounded-full flex items-center justify-center transition duration-300">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="bg-gray-800 hover:bg-primary text-white hover:text-secondary w-10 h-10 rounded-full flex items-center justify-center transition duration-300">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="text-xl font-bold mb-6">Enlaces rápidos</h4>
+                <ul class="space-y-3">
+                    <li><a href="/#inicio" class="text-gray-400 hover:text-primary transition duration-300 flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i> Inicio</a></li>
+                    <li><a href="/#planes" class="text-gray-400 hover:text-primary transition duration-300 flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i> Planes</a></li>
+                    <li><a href="/#beneficios" class="text-gray-400 hover:text-primary transition duration-300 flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i> Beneficios</a></li>
+                    <li><a href="/#entrenadores" class="text-gray-400 hover:text-primary transition duration-300 flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i> Entrenadores</a></li>
+                    <li><a href="/#contacto" class="text-gray-400 hover:text-primary transition duration-300 flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i> Ubicación</a></li>
+                    <li><a href="/registro" class="text-gray-400 hover:text-primary transition duration-300 flex items-center"><i class="fas fa-chevron-right mr-2 text-xs"></i> Suscribir</a></li>
+                </ul>
+            </div>
+            
+            <div id="contacto">
+                <h4 class="text-xl font-bold mb-6">Contacto</h4>
+                <ul class="space-y-3">
+                    <li class="flex items-start">
+                        <i class="fas fa-map-marker-alt text-primary mt-1 mr-3"></i>
+                        <span class="text-gray-400">Avenida 28 de Julio 600, Huacho</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-phone text-primary mr-3"></i>
+                        <span class="text-gray-400">+51 123 456 789</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-envelope text-primary mr-3"></i>
+                        <span class="text-gray-400">info@modofit.com</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-clock text-primary mr-3"></i>
+                        <span class="text-gray-400">Lun-Vie: 6am-10pm, Sáb: 6am-1pm</span>
+                    </li>
+                </ul>
+                <!-- Google Maps Embed -->
+                <div class="mt-6 rounded-lg overflow-hidden shadow-lg">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3915.0789490286643!2d-77.6101031!3d-11.1074939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9106df000486a4c7%3A0x32b9e624437cccf9!2sMODO%20FIT!5e0!3m2!1ses-419!2spe!4v1745800986293!5m2!1ses-419!2spe"
+                        width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="text-xl font-bold mb-6">Newsletter</h4>
+                <p class="text-gray-400 mb-4">Suscríbete para recibir consejos fitness, promociones exclusivas y novedades.</p>
+                <form class="mb-4" action="/newsletter/subscribe" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <div class="flex">
+                        <input type="email" name="email" placeholder="Tu email" class="bg-gray-800 text-white px-4 py-3 rounded-l-lg w-full focus:outline-none focus:ring-2 focus:ring-primary">
+                        <button type="submit" class="bg-primary hover:bg-yellow-400 text-secondary font-bold px-4 py-3 rounded-r-lg transition duration-300">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+                <p class="text-gray-500 text-sm">Al suscribirte, aceptas nuestra <a href="/politica_privacidad" class="text-gray-500 hover:text-primary underline">política de privacidad</a>.</p>
+            </div>
+        </div>
+        
+        <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+            <p class="mb-4">&copy; <%= new Date().getFullYear() %> ModoFit. Todos los derechos reservados.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="/politica_privacidad" class="text-gray-400 hover:text-primary transition duration-300">Política de Privacidad</a>
+                <span class="text-gray-600">|</span>
+                <button id="showCookiesPolicy" class="text-gray-400 hover:text-primary transition duration-300 bg-transparent border-0">Política de Cookies</button>
+                <span class="text-gray-600">|</span>
+                <a href="/terminos_y_condiciones" class="text-gray-400 hover:text-primary transition duration-300">Términos y Condiciones</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Back to top button -->
+<button id="back-to-top" class="fixed bottom-6 right-24 bg-primary hover:bg-yellow-400 text-secondary w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl z-50 transition-all duration-300 transform hover:scale-110 opacity-0">
+    <i class="fas fa-arrow-up"></i>
+</button>

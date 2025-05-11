@@ -1,0 +1,36 @@
+<!-- Navbar -->
+<nav class="navbar-fixed transition-all duration-300" :class="{'navbar-scrolled': navbarScrolled}">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center py-4">
+            <div class="flex items-center">
+                <a href="/" class="text-2xl font-bold text-primary flex items-center">
+                    <img src="./img/logo.webp" alt="ModoFit Logo" class="h-10 w-auto mr-2"> ModoFit
+                </a>
+            </div>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="/#inicio" class="text-secondary hover:text-primary transition duration-300 font-medium">Inicio</a>
+                <a href="/#planes" class="text-secondary hover:text-primary transition duration-300 font-medium">Planes</a>
+                <a href="/#beneficios" class="text-secondary hover:text-primary transition duration-300 font-medium">Beneficios</a>
+                <a href="/#entrenadores" class="text-secondary hover:text-primary transition duration-300 font-medium">Entrenadores</a>
+                <a href="/#contacto" class="text-secondary hover:text-primary transition duration-300 font-medium">Ubicación</a>
+                <a href="/login" class="text-secondary hover:text-primary transition duration-300 font-medium mr-4">Iniciar Sesión</a>
+                <a href="/registro" class="bg-primary hover:bg-yellow-400 text-secondary font-bold py-2 px-6 rounded-full transition duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1">Suscribir</a>
+            </div>
+            <div>
+                <button id="mobile-menu-button" class="md:hidden text-secondary focus:outline-none">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden pb-4 bg-white rounded-lg shadow-lg mt-2 absolute left-4 right-4 z-50">
+            <a href="/#inicio" class="block py-3 px-4 text-secondary hover:text-primary hover:bg-gray-50">Inicio</a>
+            <a href="/#planes" class="block py-3 px-4 text-secondary hover:text-primary hover:bg-gray-50">Planes</a>
+            <a href="/#beneficios" class="block py-3 px-4 text-secondary hover:text-primary hover:bg-gray-50">Beneficios</a>
+            <a href="/#entrenadores" class="block py-3 px-4 text-secondary hover:text-primary hover:bg-gray-50">Entrenadores</a>
+            <a href="/#contacto" class="block py-3 px-4 text-secondary hover:text-primary hover:bg-gray-50">Ubicación</a>
+            <a href="/login" class="block py-3 px-4 text-secondary hover:text-primary hover:bg-gray-50">Iniciar Sesión</a>
+            <a href="/registro" class="block py-3 px-4 text-primary font-bold hover:bg-primary hover:text-secondary">Suscribir</a>
+        </div>
+    </div>
+</nav>
