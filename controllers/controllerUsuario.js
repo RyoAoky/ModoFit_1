@@ -2,6 +2,7 @@ const passport = require('passport');
 const { sequelize } = require('../database/conexionsqualize');
 const { QueryTypes } = require('sequelize');
 const { sanitizeInput, validateSchema } = require('../lib/validation');
+const csrfModule = require('../lib/csrf');
 
 module.exports = {
   // Renderizar vista de login
@@ -11,26 +12,28 @@ module.exports = {
       return res.redirect('/usuario/dashboard');
     }
     
-    // Regenerar sesión para prevenir fixation attacks
-    req.session.regenerate(function(err) {
-      if (err) {
-        console.error('Error al regenerar sesión:', err);
-      }
-      
-      // Generar un nuevo token CSRF para el formulario de login
-      if (typeof req.csrfToken === 'function') {
-        res.locals.csrfToken = req.csrfToken();
-      }
-      
-      res.render('usuario/login', {
-        title: 'Iniciar Sesión',
-        layout: 'layouts/main',
-        error: req.flash('error'),
-        success_msg: req.flash('success_msg'),
-        currentPage: 'usuarioLogin',
-        // Registrar último intento de login para análisis de seguridad
-        loginAttempt: req.session.loginAttempts ? req.session.loginAttempts : 0
-      });
+    // Comprobar si hay un mensaje de logout exitoso en la URL
+    const mensaje = req.query.mensaje;
+    if (mensaje === 'logout_exitoso') {
+      req.flash('success_msg', 'Has cerrado sesión correctamente.');
+    }
+    
+    // Asegurarse de que hay un token CSRF válido para el formulario
+    // No regeneramos la sesión aquí para evitar perder los mensajes flash
+    if (!req.session.csrfToken) {
+      csrfModule.regenerateToken(req); // Usar nuestro módulo personalizado
+    }
+    
+    res.render('usuario/login', {
+      title: 'Iniciar Sesión',
+      layout: 'layouts/main',
+      error: req.flash('error'),
+      success_msg: req.flash('success_msg'),
+      currentPage: 'usuarioLogin',
+      // Registrar último intento de login para análisis de seguridad
+      loginAttempt: req.session.loginAttempts ? req.session.loginAttempts : 0,
+      // Pasar el token CSRF directamente de la sesión
+      csrfToken: req.session.csrfToken
     });
   },
 
@@ -60,6 +63,10 @@ module.exports = {
       attempts: req.session.loginAttempts
     });
     
+    // Guardar el token CSRF actual antes de la autenticación
+    const csrfToken = req.session.csrfToken;
+    const csrfTimestamp = req.session.csrfTimestamp;
+    
     passport.authenticate('local', (err, user, info) => {
       // Manejar errores durante la autenticación
       if (err) {
@@ -75,7 +82,7 @@ module.exports = {
         return res.redirect('/usuario/login');
       }
       
-      // Autenticar al usuario con login exitoso
+      // Autenticar al usuario con login exitoso sin regenerar la sesión
       req.login(user, (err) => {
         if (err) {
           console.error('Error al establecer sesión:', err);
@@ -83,29 +90,23 @@ module.exports = {
           return res.redirect('/usuario/login');
         }
         
-        // Regenerar sesión después del login para prevenir session fixation
-        const oldSession = req.session;
-        req.session.regenerate(function(err) {
-          if (err) {
-            console.error('Error al regenerar sesión post-login:', err);
-            req.flash('error', 'Error al configurar la sesión');
-            return res.redirect('/usuario/login');
-          }
-          
-          // Restaurar propiedades de sesión necesarias
-          req.session.passport = oldSession.passport;
-          req.session.csrfToken = oldSession.csrfToken;
-          req.session.csrfTimestamp = oldSession.csrfTimestamp;
-          
-          // Registrar el último login exitoso
-          req.session.lastLogin = new Date().toISOString();
-          
-          // Resetear contador de intentos fallidos
-          req.session.loginAttempts = 0;
-          
-          // Redireccionar al dashboard
-          res.redirect('/usuario/dashboard');
+        // Regenerar token CSRF y conservar la autenticación
+        csrfModule.regenerateToken(req);
+        
+        // Registrar el último login exitoso
+        req.session.lastLogin = new Date().toISOString();
+        
+        // Resetear contador de intentos fallidos
+        req.session.loginAttempts = 0;
+        
+        // Log del login exitoso
+        console.log('Login exitoso:', {
+          userID: user.UsuarioID,
+          timestamp: new Date().toISOString()
         });
+        
+        // Redireccionar al dashboard
+        res.redirect('/usuario/dashboard');
       });
     })(req, res, next);
   },

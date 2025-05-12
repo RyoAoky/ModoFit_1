@@ -242,8 +242,27 @@ app.use((err, req, res, next) => {
     }
   }
   
-  // CSRF errors - Manejador mejorado
+  // CSRF errors - Manejador mejorado con mayor detalle de depuración
   if (err.code === 'EBADCSRFTOKEN') {
+    console.log('Detalle completo de error CSRF:', {
+      path: req.path,
+      method: req.method,
+      isAjax: req.xhr || req.accepts('json'),
+      isExpired: err.isExpired || false,
+      details: err.details || {},
+      body: req.body ? Object.keys(req.body) : [],
+      session: req.session ? { hasPassport: !!req.session.passport, hasCsrf: !!req.session.csrfToken } : 'No session',
+      error: err.message
+    });
+    
+    // Manejo especial para el login
+    if (req.path === '/usuario/login' && req.method === 'POST') {
+      // Regenerar token y dejar que el proceso continúe
+      csrfModule.regenerateToken(req);
+      req.flash('error_msg', 'Por favor, intente iniciar sesión nuevamente.');
+      return res.redirect('/usuario/login');
+    }
+    
     // Regenerar token para el próximo intento
     csrfModule.regenerateToken(req);
     
@@ -258,21 +277,18 @@ app.use((err, req, res, next) => {
     }
     
     // Para API endpoints, responder con JSON
-    if (req.path.startsWith('/api') || req.accepts('json')) {
+    if (req.path.startsWith('/api') || req.xhr || req.accepts('json')) {
       return res.status(403).json({
         error: 'Token de seguridad inválido',
-        message: err.isExpired 
-          ? 'Su sesión ha expirado. Por favor, recargue la página e intente nuevamente.' 
-          : 'Error de validación de seguridad. Por favor, recargue la página e intente nuevamente.'
+        message: 'Por favor, recargue la página e intente nuevamente.',
+        action: 'reload'
       });
     }
     
     // Para formularios web normales
-    return res.status(403).render('error', {
+    return res.render('error', {
       title: 'Error de seguridad',
-      message: err.isExpired 
-        ? 'Su sesión ha expirado. Por favor, regrese y complete el formulario nuevamente.' 
-        : 'Ha ocurrido un error de seguridad en el formulario. Por favor, regrese e intente nuevamente.',
+      message: 'Ha ocurrido un error de seguridad en el formulario. Por favor, regrese e intente nuevamente.',
       error: process.env.NODE_ENV === 'development' ? err : {},
       layout: 'layouts/error'
     });
