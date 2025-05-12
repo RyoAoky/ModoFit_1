@@ -29,7 +29,7 @@
 
             <!-- Formulario -->
             <form method="POST" action="/venta/procesar-pago" id="registroForm" class="bg-white rounded-lg shadow-lg p-8" data-aos="fade-up" data-aos-delay="200">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="_csrf" id="csrfToken" value="<%= csrfToken %>">
                 <input type="hidden" name="precioTotal" id="precioTotalInput" value="49.90">
                 <input type="hidden" name="descuentoAplicado" id="descuentoAplicadoInput" value="false">
                 <input type="hidden" name="planSeleccionado" id="planSeleccionadoInput" value="modofit">
@@ -245,6 +245,116 @@
             <div class="mt-8 text-center" data-aos="fade-up" data-aos-delay="300">
                 <a href="/" class="text-primary hover:underline">Volver a la página principal</a>
             </div>
+            
+            <!-- Script para manejar el token CSRF y navegación del formulario -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const form = document.getElementById('registroForm');
+                    const csrfTokenInput = document.getElementById('csrfToken');
+                    
+                    // Verificar si el token CSRF está presente
+                    if (form && csrfTokenInput) {
+                        console.log('Token CSRF en el formulario:', csrfTokenInput.value ? 'Presente' : 'Ausente');
+                        
+                        // Lógica para prevenir envío múltiple y validar antes de enviar
+                        form.addEventListener('submit', function(e) {
+                            // Prevenir envío si el formulario ya está siendo procesado
+                            if (this.classList.contains('submitting')) {
+                                e.preventDefault();
+                                return false;
+                            }
+                            
+                            // Validar que el token CSRF esté presente
+                            if (!csrfTokenInput.value) {
+                                e.preventDefault();
+                                alert('Error de seguridad: Token CSRF ausente. Por favor, recargue la página e intente nuevamente.');
+                                return false;
+                            }
+                            
+                            // Verificar aceptación de términos
+                            const terminos = document.getElementById('terminos');
+                            if (!terminos.checked) {
+                                e.preventDefault();
+                                document.getElementById('terminos-error').classList.remove('hidden');
+                                return false;
+                            }
+                            
+                            // Marcar formulario como en proceso
+                            this.classList.add('submitting');
+                            
+                            // Auto-remover clase si hay error en 5 segundos
+                            setTimeout(() => {
+                                this.classList.remove('submitting');
+                            }, 5000);
+                        });
+                    }
+                    
+                    // Navegación entre pasos
+                    // Paso 1 -> Paso 2
+                    const toStep2Button = document.getElementById('next-to-step-2');
+                    const step1 = document.getElementById('step-1');
+                    const step2 = document.getElementById('step-2');
+                    
+                    if (toStep2Button && step1 && step2) {
+                        toStep2Button.addEventListener('click', function() {
+                            step1.classList.remove('active');
+                            step2.classList.add('active');
+                            document.getElementById('step-indicator-1').classList.remove('active');
+                            document.getElementById('step-indicator-2').classList.add('active');
+                            document.getElementById('step-line-1').classList.add('active');
+                            document.getElementById('step-text-2').classList.add('text-secondary');
+                        });
+                    }
+                    
+                    // Paso 2 -> Paso 1
+                    const backToStep1Button = document.getElementById('back-to-step-1');
+                    if (backToStep1Button && step1 && step2) {
+                        backToStep1Button.addEventListener('click', function() {
+                            step2.classList.remove('active');
+                            step1.classList.add('active');
+                            document.getElementById('step-indicator-2').classList.remove('active');
+                            document.getElementById('step-indicator-1').classList.add('active');
+                            document.getElementById('step-line-1').classList.remove('active');
+                            document.getElementById('step-text-2').classList.remove('text-secondary');
+                        });
+                    }
+                    
+                    // Paso 2 -> Paso 3
+                    const toStep3Button = document.getElementById('next-to-step-3');
+                    const step3 = document.getElementById('step-3');
+                    
+                    if (toStep3Button && step2 && step3) {
+                        toStep3Button.addEventListener('click', function() {
+                            // Validar que el token CSRF sigue presente
+                            if (!csrfTokenInput.value) {
+                                alert('El token de seguridad ha expirado. Recargando la página...');
+                                window.location.reload();
+                                return;
+                            }
+                            
+                            step2.classList.remove('active');
+                            step3.classList.add('active');
+                            document.getElementById('step-indicator-2').classList.remove('active');
+                            document.getElementById('step-indicator-3').classList.add('active');
+                            document.getElementById('step-line-2').classList.add('active');
+                            document.getElementById('step-text-3').classList.add('text-secondary');
+                        });
+                    }
+                    
+                    // Paso 3 -> Paso 2
+                    const backToStep2Button = document.getElementById('back-to-step-2');
+                    if (backToStep2Button && step2 && step3) {
+                        backToStep2Button.addEventListener('click', function() {
+                            step3.classList.remove('active');
+                            step2.classList.add('active');
+                            document.getElementById('step-indicator-3').classList.remove('active');
+                            document.getElementById('step-indicator-2').classList.add('active');
+                            document.getElementById('step-line-2').classList.remove('active');
+                            document.getElementById('step-text-3').classList.remove('text-secondary');
+                        });
+                    }
+                });
+            </script>
         </div>
     </div>
 </section>

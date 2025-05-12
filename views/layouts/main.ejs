@@ -70,7 +70,11 @@
     <link rel="stylesheet" href="/css/main.css">
     
     <!-- CSRF Token -->
+    <% if (typeof csrfToken !== 'undefined') { %>
     <meta name="csrf-token" content="<%= csrfToken %>">
+    <% } else { %>
+    <meta name="csrf-token" content="">
+    <% } %>
 </head>
 <body class="font-sans">
     <!-- Flash Messages -->
